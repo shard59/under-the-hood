@@ -9,6 +9,7 @@ interface MyArray<T> {
     every(predicate: (item: T, index: number, arr: MyArray<T>) => unknown): boolean
     map<K>(cb: (item: T, index: number, arr: MyArray<T>) => K): MyArray<K>
     filter(predicate: (item: T, index: number, arr: MyArray<T>) => boolean): MyArray<T>
+    includes(searchElement: T, fromIndex?: number): boolean
 }
 
 function MyArray<T extends unknown[]>(this: MyArray<T[number]>, ...args: T): MyArray<T[number]> {
@@ -102,6 +103,16 @@ MyArray.prototype.filter = function<T>(this: MyArray<T>, cb: (item: T, index: nu
     }
 
     return result
+}
+
+MyArray.prototype.includes = function<T>(this: MyArray<T>, searchElement: T, fromIndex: number = 0): boolean {
+    for (let i = fromIndex; i < this.length; i++) {
+        if (this[i] === searchElement) {
+            return true
+        }
+    }
+
+    return false
 }
 
 export default MyArray as unknown as {
